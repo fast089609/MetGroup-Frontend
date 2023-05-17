@@ -1,4 +1,4 @@
-# namej
+# Front-MetGroup
 
 ## Project setup
 ```

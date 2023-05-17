@@ -5,11 +5,6 @@ import RegistrarUsuario from '../views/usuarios/RegistrarUsuario.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
     path: '/login',
     name: 'login',
     component: LoginUser,
@@ -20,18 +15,31 @@ const routes = [
     component: RegistrarUsuario,
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/',
+    name: 'home',
+    component: HomeView,
+    meta: {
+      auth: true
+    }
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token') || null
+
+  if ((to.name != 'login' && to.name != 'registrar') && token == null) return next({ name: 'login' })
+
+  if ((to.name == 'login' || to.name == 'registrar') && token != null) return next({ name: 'home' })
+
+  if (to.meta.auth) return token != null ? next() : next({ name: 'login' })
+
+  next()
 })
 
 export default router

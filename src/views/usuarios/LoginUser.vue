@@ -82,9 +82,12 @@
 
       <div class="mt-2 text-sm text-gray-600">
         No estas registrado?
-        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"
-          >Crea Una Cuenta</a
+        <router-link
+          :to="{ name: 'registrar' }"
+          :class="'font-medium text-indigo-600 hover:text-indigo-500'"
         >
+          Crea Una Cuenta
+        </router-link>
       </div>
     </div>
   </div>
@@ -92,6 +95,13 @@
 
 <script>
 export default {
-  
+  created() {
+
+  },
+  methods: {
+    login(){
+      
+    }
+  }
 };
 </script>
