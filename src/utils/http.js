@@ -15,10 +15,10 @@ const baseHttp = (data) => {
 
   fetch(url, options)
   .then(res => {
-    if (res.status < 300) {
+    // if (res.status < 300) {
       return res.json()
-    }
-    throw res
+    // }
+    // throw res
   })
   .then(res => resolve(res))
   .catch(res => reject(res))

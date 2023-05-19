@@ -9,66 +9,42 @@
       <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">
         Ingresa Al Sistema
       </h2>
-
+      <h1 class="text-red-600" v-if="error">
+        <b>{{error }}</b>
+      </h1>
       <form
         class="space-y-4"
-        @submit.prevent="$router.push({ name: 'dashboard' })"
+        @submit.prevent="loguearse"
       >
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
+            <font-awesome-icon :icon="['fas', 'user']" bounce size="lg" />
           </span>
           <input
             id="email"
             name="email"
             type="email"
-            autocomplete="email"
             class="w-full py-4 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10"
-            placeholder="Email address"
-            required=""
+            placeholder="Correo"
+            v-model="v$.usuario.$model"
           />
         </div>
+        <div v-if="v$.usuario.$error" class="text-red-700">{{v$.usuario.$errors[0].$message }}</div>
 
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
+            <font-awesome-icon :icon="['fas', 'lock']" shake size="lg" />
           </span>
           <input
             id="password"
             name="password"
             type="password"
-            autocomplete="current-password"
-            required=""
             class="w-full py-4 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10"
-            placeholder="Password"
+            placeholder="Contraseña"
+            v-model="v$.contrasena.$model"
           />
         </div>
+        <div v-if="v$.contrasena.$error" class="text-red-700">{{v$.contrasena.$errors[0].$message }}</div>
 
         <div>
           <button
@@ -94,13 +70,50 @@
 </template>
 
 <script>
-export default {
-  created() {
+import { useVuelidate } from '@vuelidate/core'
+import { required, email, helpers, minLength  } from '@vuelidate/validators'
+import usuario from '../../services/usuarios';
+import router from '@/router';
 
+export default {
+  setup () {
+    return { v$: useVuelidate() }
   },
   methods: {
-    login(){
+    async loguearse(){
+      const formulario_validado = await this.v$.$validate()
       
+      if (!formulario_validado) return
+
+      usuario.login({body: {email: this.usuario, password: this.contrasena}}).then(data => {
+        if(data.status != undefined && data.status == "error") {
+          this.error = data.message;
+        }else{
+          localStorage.setItem("authToken", data.token);
+          router.push({name: "home"});
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+  },
+  data() {
+    return {
+      usuario: "",
+      contrasena: "",
+      error: null
+    };
+  },
+  validations (){
+    return {
+      usuario: {
+        required: helpers.withMessage('El usuario es requerido', required),
+        email: helpers.withMessage('El usuario debe ser un email valido', email)
+      },
+      contrasena: {
+        required: helpers.withMessage('La contraseña es requerida.', required),
+        minLength: helpers.withMessage('La contraseña debe de tener minimo 8 caracteres.', minLength(8))
+      }
     }
   }
 };

@@ -18,6 +18,7 @@ export default createStore({
   actions: {
     login({ commit }, token) {
       // Guardar el token en la cookie segura
+      console.log(token);
       Cookies.set('authToken', token, { secure: true, sameSite: 'strict' });
 
       // Establecer el token en Vuex

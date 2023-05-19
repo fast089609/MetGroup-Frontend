@@ -1,5 +1,5 @@
 import http from "../utils/http";
-const base = import.meta.env.RUTA_API || "http://127.0.0.1:3000/api";
+const base = process.env.RUTA_API || "http://127.0.0.1:3000/api";
 
 const login = (options) => {
   return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ const registrar = (options) => {
     return new Promise((resolve, reject) => {
       http
         .post({
-          url:  `${base}/registrar`,
+          url:  `${base}/users`,
           ...options,
         })
         .then((res) => resolve(res))

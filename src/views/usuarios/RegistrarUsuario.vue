@@ -12,7 +12,7 @@
   
         <form
           class="space-y-4"
-          @submit.prevent="$router.push({ name: 'dashboard' })"
+          @submit.prevent="registrarse"
         >
         <div class="relative text-gray-400">
             <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -25,9 +25,10 @@
               autocomplete="name"
               class="w-full py-4 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10"
               placeholder="Nombre"
-              required=""
+              v-model="v$.nombre.$model"
             />
           </div>
+          <div v-if="v$.nombre.$error" class="text-red-700">{{v$.nombre.$errors[0].$message }}</div>'
 
           <div class="relative text-gray-400">
             <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -40,9 +41,10 @@
               autocomplete="email"
               class="w-full py-4 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10"
               placeholder="Email address"
-              required=""
+              v-model="v$.correo.$model"
             />
           </div>
+          <div v-if="v$.correo.$error" class="text-red-700">{{v$.correo.$errors[0].$message }}</div>
   
           <div class="relative text-gray-400">
             <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -53,11 +55,12 @@
               name="password"
               type="password"
               autocomplete="current-password"
-              required=""
               class="w-full py-4 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10"
               placeholder="Password"
+              v-model="v$.contrasena.$model"
             />
           </div>
+          <div v-if="v$.contrasena.$error" class="text-red-700">{{v$.contrasena.$errors[0].$message }}</div>
   
           <div>
             <button
@@ -78,9 +81,66 @@
   </template>
   
   <script>
+  import { useVuelidate } from '@vuelidate/core'
+  import { required, email, helpers, minLength  } from '@vuelidate/validators'
+  import usuario from '../../services/usuarios';
+  import router from '@/router';
 
   export default {
+    setup () {
+      return { v$: useVuelidate() }
+    },
 
+    methods: {
+    async registrarse(){
+      const formulario_validado = await this.v$.$validate()
+      
+      if (!formulario_validado) return
+
+      usuario.registrar(
+        {
+          body: {
+            name: this.nombre, 
+            email: this.correo, 
+            password: this.contrasena
+          }
+        }).then(data => {
+        if(data.status != undefined && data.status == "error") {
+          this.error = data.message;
+        }
+        //sale todo bien
+        router.push({name: "login"});
+      }).catch(error => {
+        console.log(error);
+      });
+    }
+  },
+
+    data() {
+      return {
+        correo: "",
+        nombre: "",
+        contrasena: "",
+        error: null
+      };
+    },
+
+    validations (){
+      return {
+        nombre: {
+          required: helpers.withMessage('El nombre es requerido', required),
+          minLength: helpers.withMessage('La contraseña debe de tener minimo 3 caracteres.', minLength(3))
+        },
+        correo: {
+          required: helpers.withMessage('El correo es requerido', required),
+          email: helpers.withMessage('El correo debe ser un email valido', email)
+        },
+        contrasena: {
+          required: helpers.withMessage('La contraseña es requerida.', required),
+          minLength: helpers.withMessage('La contraseña debe de tener minimo 8 caracteres.', minLength(8))
+        }
+      }
+    }
   };
   </script>
   
