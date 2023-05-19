@@ -186,6 +186,11 @@ export default {
           )
           .then(() => {
             this.obtenerTabla();
+            this.$notify({
+              group: "foo",
+              title: "Exito",
+              text: "Registro actualizado!"
+            }, 2000);
           });
       }
       this.mostrarEditar = false;
@@ -195,6 +200,11 @@ export default {
       if (modo == 1) {
         productos.eliminar({}, this.id_eliminacion).then(() => {
           this.obtenerTabla();
+          this.$notify({
+              group: "foo",
+              title: "Exito",
+              text: "Eliminado con exito!"
+            }, 2000);
         });
       }
       this.mostrarEliminar = false;

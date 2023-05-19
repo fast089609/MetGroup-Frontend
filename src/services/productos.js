@@ -1,9 +1,8 @@
 import http from "../utils/http";
 const base = process.env.RUTA_API || "http://127.0.0.1:3000/api";
 
-const token = localStorage.getItem('authToken');
-
 const obtener = (options) => {
+  const token = localStorage.getItem('authToken');
   return new Promise((resolve, reject) => {
     http
       .get({
@@ -17,6 +16,7 @@ const obtener = (options) => {
 };
 
 const eliminar = (options, id) => {
+  const token = localStorage.getItem('authToken');
   return new Promise((resolve, reject) => {
     http
       .delete({
@@ -30,6 +30,7 @@ const eliminar = (options, id) => {
 };
 
 const actualizar = (options, id) => {
+  const token = localStorage.getItem('authToken');
   return new Promise((resolve, reject) => {
     http
       .put({
@@ -43,6 +44,7 @@ const actualizar = (options, id) => {
 };
 
 const crear = (options) => {
+  const token = localStorage.getItem('authToken');
   return new Promise((resolve, reject) => {
     http
       .post({

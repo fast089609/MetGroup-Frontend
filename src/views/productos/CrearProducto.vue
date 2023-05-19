@@ -17,7 +17,7 @@
         <div
           class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl"
         >
-          <div class="w-100 mt-4 px-10">
+          <form class="w-100 mt-4 px-10" @submit.prevent="cerrarModal(1)">
             <div class="text-center">
               <h1 class="text-blue-500 font-bold text-4xl">Crear Producto</h1>
             </div>
@@ -98,7 +98,7 @@
               {{ v$.estado.$errors[0].$message }}
             </div>
 
-          </div>
+          </form>
           <div class="bg-gray-50 px-4 py-3 sm:flex justify-center sm:px-6">
             <button
               type="button"
@@ -169,6 +169,11 @@ export default {
       if(modo == 1){
         productos.crear({body: {name: this.nombre, status: this.status, precio: this.precio, storeId: this.tienda}}).then(() => {
           this.$emit("cerrarModalCrear", modo);
+          this.$notify({
+              group: "foo",
+              title: "Exito",
+              text: "Registro creado!"
+            }, 2000);
         })
       }
     },

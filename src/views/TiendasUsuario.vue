@@ -147,9 +147,13 @@ export default {
     },
     verificarEdicion(tienda){
       if(tienda.modo == 1){
-        tiendas.actualizar({body: {name: tienda.name, status: tienda.status}}, this.dataEditar.id).then(respuesta => {
-          console.log(respuesta);
+        tiendas.actualizar({body: {name: tienda.name, status: tienda.status}}, this.dataEditar.id).then(() => {
           this.obtenerTabla();
+          this.$notify({
+              group: "foo",
+              title: "Exito",
+              text: "Actualizado correctamente!"
+            }, 2000);
         })
       }
       this.mostrarEditar = false;
@@ -159,6 +163,11 @@ export default {
       if(modo == 1){
         tiendas.eliminar({}, this.id_eliminacion).then(() => {
           this.obtenerTabla();
+          this.$notify({
+              group: "foo",
+              title: "Exito",
+              text: "Eliminado con exito!"
+            }, 2000);
         })
       }
       this.mostrarEliminar = false;
