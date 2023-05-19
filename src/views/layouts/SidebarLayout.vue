@@ -47,8 +47,8 @@ export default {
   },
   methods: {
     seleccionMenu(nombre){
+      this.ruta_actual = nombre;
       router.push({name: nombre});
-      this.ruta_actual = router.currentRoute.value.name
     }
   }
 };

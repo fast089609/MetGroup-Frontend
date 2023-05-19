@@ -1,24 +1,14 @@
 # Front-MetGroup
 
-## Project setup
+## Recordar
+#### Es importante coincidan las rutas para conectar backend con frontend.
+
+## Instalar el proyecto
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compilarlo
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
