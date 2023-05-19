@@ -3,9 +3,13 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    authToken: null
+    authToken: null,
+    sideBarOpen: false
   },
   getters: {
+    sideBarOpen: state => {
+        return state.sideBarOpen
+    }
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -13,6 +17,9 @@ export default createStore({
     },
     CLEAR_TOKEN(state) {
       state.authToken = null;
+    },
+    toggleSidebar (state) {
+        state.sideBarOpen = !state.sideBarOpen
     }
   },
   actions: {
@@ -30,6 +37,9 @@ export default createStore({
 
       // Limpiar el token en Vuex
       commit('CLEAR_TOKEN');
+    },
+    toggleSidebar(context) {
+        context.commit('toggleSidebar')
     }
   },
   modules: {

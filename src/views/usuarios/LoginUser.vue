@@ -90,7 +90,8 @@ export default {
           this.error = data.message;
         }else{
           localStorage.setItem("authToken", data.token);
-          router.push({name: "home"});
+          localStorage.setItem("nombre_usuario", data.data.name);
+          router.push({name: "tiendas"});
         }
       }).catch(error => {
         console.log(error);

@@ -2,15 +2,7 @@
   <router-view />
 </template>
 <script>
-import Cookies from "js-cookie";
-
 export default {
-  created() {
-    const token = Cookies.get("authToken");
-    if (token) {
-      this.$store.commit("SET_TOKEN", token);
-    }
-  },
 };
 </script>
 <style>
