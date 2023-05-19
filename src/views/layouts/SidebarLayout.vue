@@ -15,6 +15,7 @@
       <div
         class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
         :class="ruta_actual == 'tiendas' ? 'bg-gray-200' : ''"
+        @click="seleccionMenu('tiendas')"
       >
         <font-awesome-icon :icon="['fas', 'store']" :bounce="ruta_actual == 'tiendas'" size="lg" class="mr-3"/>
         <span class="text-gray-700">Tiendas</span>
@@ -22,6 +23,7 @@
       <div
         class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
         :class="ruta_actual == 'productos' ? 'bg-gray-200' : ''"
+        @click="seleccionMenu('productos')"
       >
         <font-awesome-icon :icon="['fas', 'box']" :bounce="ruta_actual == 'productos'" size="lg" class="mr-3"/>
         <span class="text-gray-700">Productos</span>
@@ -41,6 +43,12 @@ export default {
   data(){
     return {
         ruta_actual: router.currentRoute.value.name
+    }
+  },
+  methods: {
+    seleccionMenu(nombre){
+      router.push({name: nombre});
+      this.ruta_actual = router.currentRoute.value.name
     }
   }
 };

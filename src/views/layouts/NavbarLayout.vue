@@ -24,7 +24,7 @@
             {{nombre_usuario}}
         </span>
         <img
-          src="https://assets.stickpng.com/images/585e4bd7cb11b227491c3397.png"
+          src="../../assets/images/usuario_icono.png"
           class="w-12 h-12 rounded-full shadow-lg"
           @click="dropDownOpen = !dropDownOpen"
         />

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TiendasUsuario from '../views/TiendasUsuario.vue'
+import ProductosTiendas from '../views/ProductosTiendas.vue'
 import HomeBase from '../views/HomeBase.vue'
 import LoginUser from '../views/usuarios/LoginUser.vue'
 import RegistrarUsuario from '../views/usuarios/RegistrarUsuario.vue'
@@ -24,6 +25,11 @@ const routes = [
         path: '/',
         name: 'tiendas',
         component: TiendasUsuario,
+      },
+      {
+        path: '/productos',
+        name: 'productos',
+        component: ProductosTiendas,
       }
     ],
     meta: {
